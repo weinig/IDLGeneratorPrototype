@@ -17,13 +17,13 @@ vpath %.cpp $(GENERATED_DIR)
 
 all : $(JS_HEADERS) $(JS_IMPLS)
 
-JS%.cpp JS%.h : %.serialized generator.pl
+JS%.cpp JS%.h : %.serialized generator.pl | Bindings.serialized
 	$(info Running generator recipe: $?)
-	./generator.pl --output=$(GENERATED_DIR) $<
+	./generator.pl --output=$(GENERATED_DIR) $?
 
-%.serialized : %.idl serializer.pl
+Bindings.serialized : $(IDL_FILES) serializer.pl
 	$(info Running serializer recipe: $?)
-	./serializer.pl --output=$(SERIALIZED_DIR) $<
+	./serializer.pl --output=$(SERIALIZED_DIR) $?
 
 clean :
 	$(info Cleaning up)
